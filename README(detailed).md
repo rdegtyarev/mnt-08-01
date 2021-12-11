@@ -83,10 +83,46 @@ ok: [ubuntu] => {
 ## Необязательная часть
 
 1. При помощи `ansible-vault` расшифруйте все зашифрованные файлы с переменными.
+> ansible-vault decrypt group_vars/deb/examp.yml  
+> ansible-vault decrypt group_vars/el/examp.yml 
 2. Зашифруйте отдельное значение `PaSSw0rd` для переменной `some_fact` паролем `netology`. Добавьте полученное значение в `group_vars/all/exmp.yml`.
+> ansible-vault encrypt_string PaSSw0rd
 3. Запустите `playbook`, убедитесь, что для нужных хостов применился новый `fact`.
+```
+TASK [Print fact] ********************************************************************************************************************************************************************************
+ok: [local-host] => {
+    "msg": "PaSSw0rd"
+}
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+```
 4. Добавьте новую группу хостов `fedora`, самостоятельно придумайте для неё переменную. В качестве образа можно использовать [этот](https://hub.docker.com/r/pycontribs/fedora).
+```
+TASK [Print fact] ********************************************************************************************************************************************************************************
+ok: [local-host] => {
+    "msg": "PaSSw0rd"
+}
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+ok: [fedora] => {
+    "msg": "fedora default fact"
+}
+```
 5. Напишите скрипт на bash: автоматизируйте поднятие необходимых контейнеров, запуск ansible-playbook и остановку контейнеров.
+```
+#!/bin/bash
+docker-compose up -d
+ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
+docker-compose down
+```
 6. Все изменения должны быть зафиксированы и отправлены в вашей личный репозиторий.
 
 ---
