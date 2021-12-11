@@ -123,6 +123,7 @@ docker-compose up -d
 ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
 docker-compose down
 ```
+>start.sh
 6. Все изменения должны быть зафиксированы и отправлены в вашей личный репозиторий.
 
 ---
